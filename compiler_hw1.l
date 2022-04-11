@@ -26,6 +26,9 @@ id {letter}+({letter}|{digit})*
 inumber {digit}+
 fnumber ({digit}*\.{digit}+)
 
+/* Define start conditions */
+%x STR_LIT
+
 
 /* Rules section */
 %%
@@ -79,13 +82,16 @@ fnumber ({digit}*\.{digit}+)
 "}"			{ print_token("RBRACE"); }
 ";"			{ print_token("SEMICOLON"); }
 ","			{ print_token("COMMA"); }
-"\""		{ print_token("QUOTA"); }
+"\""		{ print_token("QUOTA"); BEGIN(STR_LIT); }
 "\n"		{ print_token("NEWLINE"); line_num++; }
 ":"			{ print_token("COLON"); }
 
 {inumber}	{ print_token("INT_LIT"); }
 {fnumber}	{ print_token("FLOAT_LIT"); }
 {id}        { print_token("IDENT"); }
+
+<STR_LIT>[^\"]*	{ print_token("STRING_LIT"); }
+<STR_LIT>"\""	{ print_token("QUOTA"); BEGIN(INITIAL); }
 
 <<EOF>>     { line_num++; yyterminate(); }
 [ \t]+      {;}
