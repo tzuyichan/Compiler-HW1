@@ -30,6 +30,25 @@ fnumber ({digit}*\.{digit}+)
 /* Rules section */
 %%
 
+"print"		{ print_token("PRINT"); }
+"println"	{ print_token("PRINTLN"); }
+"if"		{ print_token("IF"); }
+"else"		{ print_token("ELSE"); }
+"for"		{ print_token("FOR"); }
+"int32"		{ print_token("INT"); }
+"float32"	{ print_token("FLOAT"); }
+"string"	{ print_token("STRING"); }
+"bool"		{ print_token("BOOL"); }
+"true"		{ print_token("TRUE"); }
+"false"		{ print_token("FALSE"); }
+"var"		{ print_token("VAR"); }
+"func"		{ print_token("FUNC"); }
+"package"	{ print_token("PACKAGE"); }
+"return"	{ print_token("RETURN"); }
+"switch"	{ print_token("SWITCH"); }
+"case"		{ print_token("CASE"); }
+"default"	{ print_token("DEFAULT"); }
+
 "+"         { print_token("ADD"); }
 "-"         { print_token("SUB"); }
 {id}        { print_token("IDENT"); }
