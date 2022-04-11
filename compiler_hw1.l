@@ -83,6 +83,8 @@ fnumber ({digit}*\.{digit}+)
 "\n"		{ print_token("NEWLINE"); line_num++; }
 ":"			{ print_token("COLON"); }
 
+{inumber}	{ print_token("INT_LIT"); }
+{fnumber}	{ print_token("FLOAT_LIT"); }
 {id}        { print_token("IDENT"); }
 
 <<EOF>>     { line_num++; yyterminate(); }
