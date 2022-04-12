@@ -90,7 +90,7 @@ fnumber ({digit}*\.{digit}+)
 {fnumber}	{ print_token("FLOAT_LIT"); }
 {id}        { print_token("IDENT"); }
 
-<STR_LIT>[^\"]*	{ print_token("STRING_LIT"); }
+<STR_LIT>[^"]*	{ print_token("STRING_LIT"); }
 <STR_LIT>"\""	{ print_token("QUOTA"); BEGIN(INITIAL); }
 
 <<EOF>>     { line_num++; yyterminate(); }
