@@ -27,7 +27,7 @@ inumber {digit}+
 fnumber ({digit}*\.{digit}+)
 
 /* Define start conditions */
-%x STR_LIT
+%x STR_LIT C_COMMENT CPP_COMMENT
 
 
 /* Rules section */
@@ -92,6 +92,14 @@ fnumber ({digit}*\.{digit}+)
 
 <STR_LIT>[^"]*	{ print_token("STRING_LIT"); }
 <STR_LIT>"\""	{ print_token("QUOTA"); BEGIN(INITIAL); }
+
+"//"[^\n]*			{ print_token("C++ Comment"); BEGIN(CPP_COMMENT); }
+<CPP_COMMENT>"\n"	{ print_token("NEWLINE"); line_num++, comment_num++; BEGIN(INITIAL); }
+
+"/*"				{ ECHO; BEGIN(C_COMMENT); }
+<C_COMMENT>"*/"		{ print_token("C Comment"); comment_num++; BEGIN(INITIAL); }
+<C_COMMENT>"\n"		{ print_token("C Comment"); line_num++, comment_num++; }
+<C_COMMENT>.		{ ECHO; }
 
 <<EOF>>     { line_num++; yyterminate(); }
 [ \t]+      {;}
