@@ -82,7 +82,6 @@ fnumber ({digit}*\.{digit}+)
 "}"			{ print_token("RBRACE"); }
 ";"			{ print_token("SEMICOLON"); }
 ","			{ print_token("COMMA"); }
-"\""		{ print_token("QUOTA"); BEGIN(STR_LIT); }
 "\n"		{ print_token("NEWLINE"); line_num++; }
 ":"			{ print_token("COLON"); }
 
@@ -90,8 +89,9 @@ fnumber ({digit}*\.{digit}+)
 {fnumber}	{ print_token("FLOAT_LIT"); }
 {id}        { print_token("IDENT"); }
 
-<STR_LIT>[^"]*	{ print_token("STRING_LIT"); }
-<STR_LIT>"\""	{ print_token("QUOTA"); BEGIN(INITIAL); }
+"\""				{ print_token("QUOTA"); BEGIN(STR_LIT); }
+<STR_LIT>[^"\n]*	{ print_token("STRING_LIT"); }
+<STR_LIT>"\""		{ print_token("QUOTA"); BEGIN(INITIAL); }
 
 "//"[^\n]*			{ print_token("C++ Comment"); BEGIN(CPP_COMMENT); }
 <CPP_COMMENT>"\n"	{ print_token("NEWLINE"); line_num++, comment_num++; BEGIN(INITIAL); }
